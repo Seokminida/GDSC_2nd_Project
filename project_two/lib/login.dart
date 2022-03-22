@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:project_two/signup.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'home.dart';
-import 'mapScreen.dart';//
+import 'mapScreen.dart'; //
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class _LoginState extends State<Login> {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MapSample()));//
+            .push(MaterialPageRoute(builder: (context) => MapSample())); //
       } catch (e) {
         Fluttertoast.showToast(msg: e.toString());
       }
@@ -156,7 +155,7 @@ class _LoginState extends State<Login> {
     try {
       await FirebaseAuth.instance.signInWithCredential(credential);
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Home()));
+          .push(MaterialPageRoute(builder: (context) => MapSample()));
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }

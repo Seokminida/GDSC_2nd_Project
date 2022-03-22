@@ -2,21 +2,12 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'location_services.dart';//
+import 'location_services.dart'; //
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Google Maps Demo',
-//       home: MapSample(),
-//     );
-//   }
-// }
 
 class MapSample extends StatefulWidget {
   @override
@@ -76,6 +67,9 @@ class MapSampleState extends State<MapSample> {
           path: "assets/midpoint.png", //paste the custom image path
           width: 100 // size of custom image as marker
           );
+      String place =
+          await LocationService().getPlaceAddress(pointlat, pointlng) as String;
+
       setState(() {
         _markers.add(
           Marker(
@@ -84,7 +78,7 @@ class MapSampleState extends State<MapSample> {
             icon: BitmapDescriptor.fromBytes(customMarker),
             infoWindow: InfoWindow(
               title: '중간지점',
-              snippet: '위도: $pointlat 경도: $pointlng 위치:',
+              snippet: '위도: $pointlat 경도: $pointlng 위치: $place',
             ),
           ),
         );
@@ -140,93 +134,131 @@ class MapSampleState extends State<MapSample> {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _originController,
-                      decoration: InputDecoration(hintText: ' Origin'),
-                      onChanged: (value) {
-                        print(value);
-                      },
-                    ),
-                    TextField(
-                      controller: _destinationController,
-                      decoration: InputDecoration(hintText: ' Destination'),
-                      onChanged: (value) {
-                        print(value);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  clearMap();
-                  var place1 =
-                      await LocationService().getPlace(_originController.text);
-                  var place2 = await LocationService()
-                      .getPlace(_destinationController.text);
-                  var midLat = makenum(
-                      (place1['lat'] as double), (place2['lat'] as double));
-                  var midLng = makenum(
-                      (place1['lng'] as double), (place2['lng'] as double));
+          // Row(
+          //   children: [
+          //     Expanded(
+          //       child: Column(
+          //         children: [
+          //           TextField(
+          //             controller: _originController,
+          //             decoration: InputDecoration(hintText: ' Origin'),
+          //             onChanged: (value) {
+          //               print(value);
+          //             },
+          //           ),
+          //           TextField(
+          //             controller: _destinationController,
+          //             decoration: InputDecoration(hintText: ' Destination'),
+          //             onChanged: (value) {
+          //               print(value);
+          //             },
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //     IconButton(
+          //       onPressed: () async {
+          //         clearMap();
+          //         var place1 =
+          //             await LocationService().getPlace(_originController.text);
+          //         var place2 = await LocationService()
+          //             .getPlace(_destinationController.text);
+          //         var midLat = makenum(
+          //             (place1['lat'] as double), (place2['lat'] as double));
+          //         var midLng = makenum(
+          //             (place1['lng'] as double), (place2['lng'] as double));
 
-                  var directions = await LocationService()
-                      .getDirections(_originController.text, midLat, midLng);
+          //         var directions = await LocationService()
+          //             .getDirections(_originController.text, midLat, midLng);
 
-                  _setMarker(LatLng(midLat, midLng), 0);
-                  _setMarker(
-                      LatLng(directions['start_location']['lat'],
-                          directions['start_location']['lng']),
-                      1);
+          //         _setMarker(LatLng(midLat, midLng), 0);
+          //         _setMarker(
+          //             LatLng(directions['start_location']['lat'],
+          //                 directions['start_location']['lng']),
+          //             1);
 
-                  _goToPlace(
-                    midLat,
-                    midLng,
-                  );
-                  _setPolyline(directions['polyline_decoded']);
+          //         _goToPlace(
+          //           midLat,
+          //           midLng,
+          //         );
+          //         _setPolyline(directions['polyline_decoded']);
 
-                  distance = directions['distance']['text'];
-                  duration = directions['duration']['text'];
+          //         distance = directions['distance']['text'];
+          //         duration = directions['duration']['text'];
 
-                  showToast(distance + " " + duration);
+          //         showToast(distance + " " + duration);
 
-                  directions = await LocationService().getDirections(
-                      _destinationController.text, midLat, midLng);
-                  _setMarker(
-                      LatLng(directions['start_location']['lat'],
-                          directions['start_location']['lng']),
-                      1);
+          //         directions = await LocationService().getDirections(
+          //             _destinationController.text, midLat, midLng);
+          //         _setMarker(
+          //             LatLng(directions['start_location']['lat'],
+          //                 directions['start_location']['lng']),
+          //             1);
 
-                  _setPolyline(directions['polyline_decoded']);
+          //         _setPolyline(directions['polyline_decoded']);
 
-                  distance = directions['distance']['text'];
-                  duration = directions['duration']['text'];
+          //         distance = directions['distance']['text'];
+          //         duration = directions['duration']['text'];
 
-                  showToast(distance + " " + duration);
-                },
-                icon: Icon(Icons.search),
-              ),
-            ],
-          ),
+          //         showToast(distance + " " + duration);
+          //       },
+          //       icon: Icon(Icons.search),
+          //     ),
+          //   ],
+          // ),
           Expanded(
-            child: GoogleMap(
-              mapType: MapType.normal,
-              markers: _markers,
-              polylines: _polylines,
-              initialCameraPosition: _kGooglePlex,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
+            child: Stack(
+              children: [
+                GoogleMap(
+                  mapType: MapType.normal,
+                  zoomGesturesEnabled: true,
+                  zoomControlsEnabled: false,
+                  markers: _markers,
+                  polylines: _polylines,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final GoogleMapController controller =
+                              await _controller.future;
+                          controller.animateCamera(
+                            CameraUpdate.zoomIn(),
+                          );
+                        },
+                        child: Icon(Icons.add),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          final GoogleMapController controller =
+                              await _controller.future;
+                          controller.animateCamera(
+                            CameraUpdate.zoomOut(),
+                          );
+                        },
+                        child: Icon(Icons.remove),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {}, label: Icon(Icons.skip_next)),
+          onPressed: () {
+            FlutterDialog();
+          },
+          label: Icon(Icons.search)),
     );
   }
 
@@ -264,15 +296,6 @@ class MapSampleState extends State<MapSample> {
         CameraPosition(target: LatLng(lat, lng), zoom: 7),
       ),
     );
-
-    // controller.animateCamera(
-    //   CameraUpdate.newLatLngBounds(
-    //       LatLngBounds(
-    //         southwest: LatLng(boundsSw['lat'], boundsSw['lng']),
-    //         northeast: LatLng(boundsNe['lat'], boundsNe['lng']),
-    //       ),
-    //       25),
-    // );
   }
 
   _checkPermission() async {
@@ -298,5 +321,125 @@ class MapSampleState extends State<MapSample> {
     if (permission == LocationPermission.deniedForever) {
       return Future.error('');
     }
+  }
+
+  void FlutterDialog() {
+    showDialog(
+      context: context,
+      //barrierDismissible - Dialog를 제외한 다른 화면 터치 x
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Expanded(
+            child: Container(
+              width: 350,
+              height: 500,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: _originController,
+                              decoration: InputDecoration(hintText: ' Origin'),
+                              onChanged: (value) {
+                                print(value);
+                              },
+                            ),
+                            TextField(
+                              controller: _destinationController,
+                              decoration:
+                                  InputDecoration(hintText: ' Destination'),
+                              onChanged: (value) {
+                                print(value);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      // IconButton(
+                      //   onPressed: () async {
+
+                      //   },
+                      //   icon: Icon(Icons.search),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 350,
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: 350,
+                      height: 40,
+                      child: MaterialButton(
+                        child: Text(
+                          "중간장소 찾기",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          clearMap();
+                          var place1 = await LocationService()
+                              .getPlace(_originController.text);
+                          var place2 = await LocationService()
+                              .getPlace(_destinationController.text);
+                          var midLat = makenum((place1['lat'] as double),
+                              (place2['lat'] as double));
+                          var midLng = makenum((place1['lng'] as double),
+                              (place2['lng'] as double));
+
+                          var directions = await LocationService()
+                              .getDirections(
+                                  _originController.text, midLat, midLng);
+
+                          _setMarker(LatLng(midLat, midLng), 0);
+                          _setMarker(
+                              LatLng(directions['start_location']['lat'],
+                                  directions['start_location']['lng']),
+                              1);
+
+                          _goToPlace(
+                            midLat,
+                            midLng,
+                          );
+                          _setPolyline(directions['polyline_decoded']);
+
+                          distance = directions['distance']['text'];
+                          duration = directions['duration']['text'];
+
+                          showToast(distance + " " + duration);
+
+                          directions = await LocationService().getDirections(
+                              _destinationController.text, midLat, midLng);
+                          _setMarker(
+                              LatLng(directions['start_location']['lat'],
+                                  directions['start_location']['lng']),
+                              1);
+
+                          _setPolyline(directions['polyline_decoded']);
+
+                          distance = directions['distance']['text'];
+                          duration = directions['duration']['text'];
+
+                          showToast(distance + " " + duration);
+                        },
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

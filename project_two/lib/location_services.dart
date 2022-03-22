@@ -28,13 +28,14 @@ class LocationService {
     return results;
   }
 
-  // Future<String> getPlaceAddress(double lat, double lng) async {
-  //   final url =
-  //       'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$key';
-  //   var response = await http.get(Uri.parse(url));
-  //   var json = convert.jsonDecode(response.body);
-  //   return json['results'][0]['address_components'][1]['long_name'];
-  // }
+  Future<String> getPlaceAddress(double lat, double lng) async {
+    final url =
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$key';
+    var response = await http.get(Uri.parse(url));
+    var json = convert.jsonDecode(response.body);
+    print(json['results'][0]['address_components'][1]['long_name']);
+    return json['results'][0]['address_components'][1]['long_name'];
+  }
 
   Future<Map<String, dynamic>> getDirections(
       String origin, double midLat, double midLng) async {
