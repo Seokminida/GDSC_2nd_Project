@@ -42,6 +42,9 @@ dependencies:
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.1.3
   geolocator: ^8.2.0
+  searchfield: ^0.6.2
+  animated_splash_screen: ^1.0.1+2
+  splashscreen:
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +82,9 @@ flutter:
     - assets/images/bus-school.png
     - assets/midpoint.png
     - assets/person1.png
+    - assets/images/giphy.gif
+    - assets/images/run.png
+    - assets/images/run22.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

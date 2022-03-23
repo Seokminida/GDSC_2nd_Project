@@ -2,6 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:project_two/example1.dart';
+import 'package:searchfield/searchfield.dart';
+
+final _formKey = GlobalKey<FormState>();
+
+final _searchController = TextEditingController();
+
+final List<String> _init = [];
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -37,12 +45,11 @@ class _SignUpState extends State<SignUp> {
     final CollectionReference _user =
         FirebaseFirestore.instance.collection('user');
 
-    _user
-        .doc('${FirebaseAuth.instance.currentUser!.uid}')
-        .set({
+    _user.doc('${FirebaseAuth.instance.currentUser!.uid}').set({
       'email': emailController.text,
       'name': nameController.text,
-      'address': addressController.text
+      'address': address2,
+      'friends': FieldValue.arrayUnion(_init)
     });
     //firestore database에 현재 등록 유저의 정보 올리기
     //<Users 컬렉션 -> 현재 유저의 uid 도큐먼트>에 유저 데이터 추가
@@ -133,21 +140,14 @@ class _SignUpState extends State<SignUp> {
                                 borderRadius: BorderRadius.circular(10)))),
                   ),
                   Container(
-                    margin: EdgeInsets.fromLTRB(25, 40, 25, 0),
-                    child: TextFormField(
-                        controller: addressController,
-                        keyboardType: TextInputType.text,
-                        onSaved: (value) {
-                          emailController.text = value!;
-                        },
-                        textInputAction: TextInputAction.next, //엔터 치면 다음으로 넘어감
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.home),
-                            contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-                            hintText: "Address",
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)))),
-                  ),
+                      margin: EdgeInsets.only(top: 40),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.grey),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => Example1()));
+                          },
+                          child: Text('주소 입력하기')))
                 ],
               ),
             ),
