@@ -8,7 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
-import 'myPage.dart';//
+import 'myPage.dart'; //
 
 class MapSample extends StatefulWidget {
   @override
@@ -31,8 +31,8 @@ class MapSampleState extends State<MapSample> {
   BitmapDescriptor? markerPerson;
 
   static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+    target: LatLng(39.8520507, -105.7820674),
+    zoom: 4,
   );
 
   @override
@@ -64,10 +64,8 @@ class MapSampleState extends State<MapSample> {
     var pointlng = point.longitude;
 
     if (num == 0) {
-      final Uint8List customMarker = await getBytesFromAsset(
-          path: "assets/midpoint.png", //paste the custom image path
-          width: 100 // size of custom image as marker
-          );
+      final Uint8List customMarker =
+          await getBytesFromAsset(path: "assets/midpoint.png", width: 100);
       String place =
           await LocationService().getPlaceAddress(pointlat, pointlng) as String;
 
@@ -131,90 +129,25 @@ class MapSampleState extends State<MapSample> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        title: Text('Google Maps'),
+        title: Text('We Meet?'),
+        backgroundColor: Color.fromARGB(200, 50, 180, 150),
+        elevation: 0.0,
         actions: [
           IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyPage()));
-                },
-                icon: Icon(Icons.person))
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyPage(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person),
+          )
         ],
       ),
       body: Column(
         children: [
-          // Row(
-          //   children: [
-          //     Expanded(
-          //       child: Column(
-          //         children: [
-          //           TextField(
-          //             controller: _originController,
-          //             decoration: InputDecoration(hintText: ' Origin'),
-          //             onChanged: (value) {
-          //               print(value);
-          //             },
-          //           ),
-          //           TextField(
-          //             controller: _destinationController,
-          //             decoration: InputDecoration(hintText: ' Destination'),
-          //             onChanged: (value) {
-          //               print(value);
-          //             },
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //     IconButton(
-          //       onPressed: () async {
-          //         clearMap();
-          //         var place1 =
-          //             await LocationService().getPlace(_originController.text);
-          //         var place2 = await LocationService()
-          //             .getPlace(_destinationController.text);
-          //         var midLat = makenum(
-          //             (place1['lat'] as double), (place2['lat'] as double));
-          //         var midLng = makenum(
-          //             (place1['lng'] as double), (place2['lng'] as double));
-
-          //         var directions = await LocationService()
-          //             .getDirections(_originController.text, midLat, midLng);
-
-          //         _setMarker(LatLng(midLat, midLng), 0);
-          //         _setMarker(
-          //             LatLng(directions['start_location']['lat'],
-          //                 directions['start_location']['lng']),
-          //             1);
-
-          //         _goToPlace(
-          //           midLat,
-          //           midLng,
-          //         );
-          //         _setPolyline(directions['polyline_decoded']);
-
-          //         distance = directions['distance']['text'];
-          //         duration = directions['duration']['text'];
-
-          //         showToast(distance + " " + duration);
-
-          //         directions = await LocationService().getDirections(
-          //             _destinationController.text, midLat, midLng);
-          //         _setMarker(
-          //             LatLng(directions['start_location']['lat'],
-          //                 directions['start_location']['lng']),
-          //             1);
-
-          //         _setPolyline(directions['polyline_decoded']);
-
-          //         distance = directions['distance']['text'];
-          //         duration = directions['duration']['text'];
-
-          //         showToast(distance + " " + duration);
-          //       },
-          //       icon: Icon(Icons.search),
-          //     ),
-          //   ],
-          // ),
           Expanded(
             child: Stack(
               children: [
@@ -233,27 +166,63 @@ class MapSampleState extends State<MapSample> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 200,
+                        height: 630,
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final GoogleMapController controller =
-                              await _controller.future;
-                          controller.animateCamera(
-                            CameraUpdate.zoomIn(),
-                          );
-                        },
-                        child: Icon(Icons.add),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final GoogleMapController controller =
-                              await _controller.future;
-                          controller.animateCamera(
-                            CameraUpdate.zoomOut(),
-                          );
-                        },
-                        child: Icon(Icons.remove),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final GoogleMapController controller =
+                                  await _controller.future;
+
+                              controller.animateCamera(
+                                CameraUpdate.newCameraPosition(_kGooglePlex),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow[700],
+                              elevation: 0,
+                            ),
+                            child: Icon(Icons.pin_drop),
+                          ),
+                          SizedBox(
+                            width: 40,
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final GoogleMapController controller =
+                                  await _controller.future;
+                              controller.animateCamera(
+                                CameraUpdate.zoomIn(),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow[700],
+                              elevation: 0,
+                            ),
+                            child: Icon(Icons.add),
+                          ),
+                          SizedBox(
+                            width: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () async {
+                              final GoogleMapController controller =
+                                  await _controller.future;
+                              controller.animateCamera(
+                                CameraUpdate.zoomOut(),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.yellow[700],
+                              elevation: 0,
+                            ),
+                            child: Icon(Icons.remove),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -264,10 +233,12 @@ class MapSampleState extends State<MapSample> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            FlutterDialog();
-          },
-          label: Icon(Icons.search)),
+        backgroundColor: Colors.yellow[700],
+        onPressed: () {
+          FlutterDialog();
+        },
+        label: Icon(Icons.search),
+      ),
     );
   }
 
@@ -349,35 +320,13 @@ class MapSampleState extends State<MapSample> {
                     children: [
                       Expanded(
                         child: Column(
-                          children: [
-                            TextField(
-                              controller: _originController,
-                              decoration: InputDecoration(hintText: ' Origin'),
-                              onChanged: (value) {
-                                print(value);
-                              },
-                            ),
-                            TextField(
-                              controller: _destinationController,
-                              decoration:
-                                  InputDecoration(hintText: ' Destination'),
-                              onChanged: (value) {
-                                print(value);
-                              },
-                            ),
-                          ],
+                          children: [],
                         ),
                       ),
-                      // IconButton(
-                      //   onPressed: () async {
-
-                      //   },
-                      //   icon: Icon(Icons.search),
-                      // ),
                     ],
                   ),
                   SizedBox(
-                    height: 350,
+                    height: 100,
                   ),
                   Expanded(
                     child: Container(
@@ -428,8 +377,10 @@ class MapSampleState extends State<MapSample> {
                           directions = await LocationService().getDirections(
                               _destinationController.text, midLat, midLng);
                           _setMarker(
-                              LatLng(directions['start_location']['lat'],
-                                  directions['start_location']['lng']),
+                              LatLng(
+                                directions['start_location']['lat'],
+                                directions['start_location']['lng'],
+                              ),
                               1);
 
                           _setPolyline(directions['polyline_decoded']);
