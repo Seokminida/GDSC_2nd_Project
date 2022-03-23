@@ -71,7 +71,7 @@ flutter:
   assets:
     - images/
     - assets/person1.png
-    - assets/midpoint1.png
+    - assets/midpoint.png
     - assets/images/bus-school.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
