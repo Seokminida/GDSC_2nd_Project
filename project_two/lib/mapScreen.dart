@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'dart:ui' as ui;
+import 'myPage.dart';//
 
 class MapSample extends StatefulWidget {
   @override
@@ -131,6 +132,14 @@ class MapSampleState extends State<MapSample> {
     return new Scaffold(
       appBar: AppBar(
         title: Text('Google Maps'),
+        actions: [
+          IconButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyPage()));
+                },
+                icon: Icon(Icons.person))
+        ],
       ),
       body: Column(
         children: [
