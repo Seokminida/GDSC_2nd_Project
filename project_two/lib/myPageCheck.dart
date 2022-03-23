@@ -62,7 +62,7 @@ class _MyPageCheckState extends State<MyPageCheck> {
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           ),
-          backgroundColor: Colors.blue[200], // 앱바의 배경 색
+          backgroundColor: Color.fromARGB(200, 50, 180, 150), // 앱바의 배경 색
           elevation: 0.0, //떠서 보이는 그임자
         ),
         body: Form(
@@ -122,13 +122,13 @@ class _MyPageCheckState extends State<MyPageCheck> {
                 ),
                 Divider(
                   height: 35.0,
-                  color: Colors.blue[200],
+                  color: Color.fromARGB(200, 50, 180, 150),
                   thickness: 1.0,
                   endIndent: 5.0,
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      primary: Colors.blue[200],
+                      primary: Color.fromARGB(200, 50, 180, 150),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       minimumSize: Size(500, 50)),

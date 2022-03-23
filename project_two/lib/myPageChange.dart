@@ -96,7 +96,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold),
                     ),
-                    backgroundColor: Colors.blue[200], // 앱바의 배경 색
+                    backgroundColor: Color.fromARGB(200, 50, 180, 150), // 앱바의 배경 색
                     elevation: 0.0, //떠서 보이는 그임자
                   ),
                   body: SingleChildScrollView(
@@ -170,7 +170,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.blue[200],
+                                primary: Color.fromARGB(200, 50, 180, 150),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 minimumSize: Size(500, 50)),
@@ -333,7 +333,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                primary: Colors.blue[200],
+                                primary: Color.fromARGB(200, 50, 180, 150),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10)),
                                 minimumSize: Size(500, 50)),
@@ -472,7 +472,7 @@ class _MyPageChangeState extends State<MyPageChange> {
                           ),
                           Divider(
                             height: 20.0,
-                            color: Colors.blue[200],
+                            color: Color.fromARGB(200, 50, 180, 150),
                             thickness: 1.5,
                             endIndent: 1.0,
                           ),

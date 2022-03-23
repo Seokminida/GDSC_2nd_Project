@@ -15,7 +15,7 @@ class _MyRecordState extends State<MyRecord> {
   final _user = FirebaseFirestore.instance
       .collection('user')
       .doc('${FirebaseAuth.instance.currentUser!.uid}')
-      .collection('userrecord'); //
+      .collection('route'); 
 
   void deleteUser() async {
     try {
@@ -41,7 +41,7 @@ class _MyRecordState extends State<MyRecord> {
               fontSize: 20.0,
               fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue[200], // 앱바의 배경 색
+        backgroundColor: Color.fromARGB(200, 50, 180, 150), // 앱바의 배경 색
         elevation: 0.0, //떠서 보이는 그임자
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -57,8 +57,8 @@ class _MyRecordState extends State<MyRecord> {
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     leading: Icon(Icons.zoom_in),
-                    title: Text(documentSnapshot['date']), //
-                    subtitle: Text(documentSnapshot['address']), //
+                    title: Text(documentSnapshot['lat'] + documentSnapshot['lon']), //
+                    subtitle: Text(documentSnapshot['place']), //
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
@@ -73,7 +73,7 @@ class _MyRecordState extends State<MyRecord> {
                                         title: Text('친구'),
                                         content: SingleChildScrollView(
                                           child:
-                                              Text(documentSnapshot['friends']),
+                                              Text(documentSnapshot['friends'][0]),
                                         ),
                                         actions: <Widget>[
                                           TextButton(

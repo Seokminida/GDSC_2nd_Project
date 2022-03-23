@@ -54,7 +54,7 @@ class _MyPageState extends State<MyPage> {
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold),
             ),
-            backgroundColor: Colors.blue[200], // 앱바의 배경 색
+            backgroundColor: Color.fromARGB(200, 50, 180, 150), // 앱바의 배경 색
             elevation: 0.0, // 앱바 입체감
           ),
           body: Padding(
@@ -84,7 +84,7 @@ class _MyPageState extends State<MyPage> {
                                   actions: <Widget>[
                                     Divider(
                                       height: 0.0,
-                                      color: Colors.blue[200],
+                                      color: Color.fromARGB(200, 50, 180, 150),
                                       thickness: 1.5,
                                       endIndent: 0.0,
                                     ),
@@ -98,7 +98,7 @@ class _MyPageState extends State<MyPage> {
                                     ),
                                     Divider(
                                       height: 0.0,
-                                      color: Colors.blue[200],
+                                      color: Color.fromARGB(200, 50, 180, 150),
                                       thickness: 0.0,
                                       endIndent: 0.0,
                                     ),
@@ -112,7 +112,7 @@ class _MyPageState extends State<MyPage> {
                                     ),
                                     Divider(
                                       height: 0.0,
-                                      color: Colors.blue[200],
+                                      color: Color.fromARGB(200, 50, 180, 150),
                                       thickness: 0.0,
                                       endIndent: 0.0,
                                     ),
@@ -186,7 +186,7 @@ class _MyPageState extends State<MyPage> {
                 ),
                 Divider(
                   height: 60.0,
-                  color: Colors.blue[200],
+                  color: Color.fromARGB(200, 50, 180, 150),
                   thickness: 1.5,
                   endIndent: 5.0,
                 ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart'; //
 import 'package:firebase_auth/firebase_auth.dart'; //
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class MyFriends extends StatefulWidget {
@@ -10,13 +11,24 @@ class MyFriends extends StatefulWidget {
 }
 
 class _MyFriendsState extends State<MyFriends> {
-  final _user = FirebaseFirestore.instance.collection('user');
-  //.doc('${FirebaseAuth.instance.currentUser!.uid}')
-  //.collection('userfriend'); //
+  final _user = FirebaseFirestore.instance.collection('user').doc('${FirebaseAuth.instance.currentUser!.uid}');
 
-  //start
-  late Stream<QuerySnapshot> _stream;
-  //finish
+  String userN = "";
+  String userE = "";//
+  String userA = "";
+
+  void findfriend() async {
+    var result = await FirebaseFirestore.instance
+        .collection('user')
+        .where('email', isEqualTo: _filter.text)
+        .get();
+
+    result.docs.forEach((element) {
+      userN = element['name'];
+      userE = element['email'];//
+      userA = element['address'];
+    });
+  }
 
   TextEditingController _filter = TextEditingController();
   FocusNode focusNode = FocusNode();
@@ -34,7 +46,7 @@ class _MyFriendsState extends State<MyFriends> {
               fontSize: 20.0,
               fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Colors.blue[200], // 앱바의 배경 색
+        backgroundColor: Color.fromARGB(200, 50, 180, 150), // 앱바의 배경색
         elevation: 0.0, //떠서 보이는 그임자
         // actions: [
         //   IconButton(
@@ -133,7 +145,7 @@ class _MyFriendsState extends State<MyFriends> {
                       fillColor: Colors.white,
                       prefixIcon: Icon(
                         Icons.mail,
-                        color: Colors.blue[200],
+                        color: Color.fromARGB(200, 50, 180, 150),
                         size: 25,
                       ),
                     ),
@@ -142,34 +154,46 @@ class _MyFriendsState extends State<MyFriends> {
                 IconButton(
                     icon: Icon(
                       Icons.search,
-                      color: Colors.blue[200],
+                      color: Color.fromARGB(200, 50, 180, 150),
                       size: 30,
                     ),
                     onPressed: () async {
-                      print(_filter.text + "<"); //
-                      //                 StreamBuilder<QuerySnapshot>(
-                      //   stream: _user.snapshots(),
-                      //   builder: (context, streamSnapshot) {
-                      //     if (streamSnapshot.hasData) {
-                      //       return ListView.builder(
-                      //         itemCount: streamSnapshot.data!.docs.length, //
-                      //         itemBuilder: (context, index) {
-                      //           final DocumentSnapshot documentSnapshot =
-                      //               streamSnapshot.data!.docs[index]; //
-                      //             );
-                      //         },
-                      //       );
-                      //     }
-                      //     return const Center(
-                      //       child: CircularProgressIndicator(),
-                      //     );
-                      //   },
-                      // );
-                      print(_filter.text + "<<"); //
+                      findfriend();
+                      if (userE != "") {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false, // 창 밖 선택시 창 닫기
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('친구 추가'),
+                              content: SingleChildScrollView(
+                                child: Text(userN + "님을 추가하시겠습니까?"),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('추가'),
+                                  onPressed: () {
+                                    _user.update({'friends':FieldValue.arrayUnion([_filter.text])});
+                                    Fluttertoast.showToast(msg: userN + '님이 추가되었습니다.');
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                TextButton(
+                                  child: Text('취소'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                          userE = "";
+                      } else {
+                        Fluttertoast.showToast(msg: '해당 이메일이 검색되지 않습니다.');
+                      }
                     })
               ],
             ),
-            Text('hello its me'),
           ],
         ),
       ),
