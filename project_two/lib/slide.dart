@@ -63,12 +63,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.yellow[600],
+        //color: Colors.yellow[600],
         child: Stack(
           children: [
             Container(
               child: Image.asset(
-                'assets/images/giphy.gif',
+                'assets/images/map.png',
                 height: 1200,
                 width: 1000,
               ),
