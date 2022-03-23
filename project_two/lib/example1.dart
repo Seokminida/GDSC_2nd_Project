@@ -70,6 +70,7 @@ class _Example1State extends State<Example1> {
   final _formKey = GlobalKey<FormState>();
 
   final _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

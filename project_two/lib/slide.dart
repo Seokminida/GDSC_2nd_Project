@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'login.dart';
 import 'package:flutter/material.dart';
@@ -49,23 +50,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
   void dispose() {
     _animationController.dispose();
     super.dispose();
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => Login()));
+  }
+
+  @override
+  void initState() {
+    Timer(Duration(milliseconds: 6000), () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('중간 가즈아'),
-      ),
       body: Container(
+        color: Colors.yellow[600],
         child: Stack(
           children: [
             Container(
               child: Image.asset(
                 'assets/images/giphy.gif',
-                height: 1000,
+                height: 1200,
                 width: 1000,
               ),
             ),
@@ -74,7 +78,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
               child: Container(
                 child: Image.asset(
                   'assets/images/run22.png',
-                  height: 100,
+                  height: 190,
                   width: 100,
                 ),
               ),
@@ -83,13 +87,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                   offset: _translateAnimation.value,
                   child: child,
                 );
-                // return Transform.scale(
-                //   scale: _scaleAnimation.value,
-                //   child: Transform.rotate(
-                //     angle: _rotateAnimation.value,
-                //     child: child,
-                //   ),
-                // );
               },
             ),
             AnimatedBuilder(
@@ -97,7 +94,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
               child: Container(
                 child: Image.asset(
                   'assets/images/run.png',
-                  height: 100,
+                  height: 190,
                   width: 100,
                 ),
               ),
@@ -106,27 +103,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget>
                   offset: _translateAnimation2.value,
                   child: child,
                 );
-                // return Transform.scale(
-                //   scale: _scaleAnimation.value,
-                //   child: Transform.rotate(
-                //     angle: _rotateAnimation.value,
-                //     child: child,
-                //   ),
-                // );
               },
-            ),
-            Positioned(
-              bottom: 40,
-              right: 155,
-              child: Container(
-                child: ElevatedButton(
-                  child: Text('테스트 시작'),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => Login()));
-                  },
-                ),
-              ),
             ),
           ],
         ),
