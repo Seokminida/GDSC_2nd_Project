@@ -56,9 +56,9 @@ class _LoginState extends State<Login> {
                   children: [
                     Container(
                       child: Image.asset(
-                        'assets/images/bus-school.png',
-                        height: 100,
-                        width: 100,
+                        'assets/images/map3.png',
+                        height: 200,
+                        width: 400,
                       ),
                     ),
                     //이메일 텍스트필드

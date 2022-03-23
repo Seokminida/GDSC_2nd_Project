@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class test2 extends StatelessWidget {
   const test2({Key? key}) : super(key: key);
 
-  static const String _title = 'Flutter Code Sample';
+  static const String _title = 'We Meet?';
 
   @override
   Widget build(BuildContext context) {

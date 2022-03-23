@@ -11,10 +11,12 @@ class MyFriends extends StatefulWidget {
 }
 
 class _MyFriendsState extends State<MyFriends> {
-  final _user = FirebaseFirestore.instance.collection('user').doc('${FirebaseAuth.instance.currentUser!.uid}');
+  final _user = FirebaseFirestore.instance
+      .collection('user')
+      .doc('${FirebaseAuth.instance.currentUser!.uid}');
 
   String userN = "";
-  String userE = "";//
+  String userE = ""; //
   String userA = "";
 
   void findfriend() async {
@@ -25,7 +27,7 @@ class _MyFriendsState extends State<MyFriends> {
 
     result.docs.forEach((element) {
       userN = element['name'];
-      userE = element['email'];//
+      userE = element['email']; //
       userA = element['address'];
     });
   }
@@ -118,6 +120,7 @@ class _MyFriendsState extends State<MyFriends> {
         //       icon: Icon(Icons.person_add))
         // ],
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
@@ -125,7 +128,7 @@ class _MyFriendsState extends State<MyFriends> {
             Row(
               children: <Widget>[
                 Container(
-                  width: 364,
+                  width: 343,
                   height: 50,
                   child: TextField(
                     focusNode: focusNode,
@@ -139,7 +142,7 @@ class _MyFriendsState extends State<MyFriends> {
                       labelStyle: TextStyle(
                           color: Colors.white,
                           letterSpacing: 2.0,
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.bold),
                       filled: true,
                       fillColor: Colors.white,
@@ -161,33 +164,37 @@ class _MyFriendsState extends State<MyFriends> {
                       findfriend();
                       if (userE != "") {
                         showDialog(
-                          context: context,
-                          barrierDismissible: false, // 창 밖 선택시 창 닫기
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('친구 추가'),
-                              content: SingleChildScrollView(
-                                child: Text(userN + "님을 추가하시겠습니까?"),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('추가'),
-                                  onPressed: () {
-                                    _user.update({'friends':FieldValue.arrayUnion([_filter.text])});
-                                    Fluttertoast.showToast(msg: userN + '님이 추가되었습니다.');
-                                    Navigator.of(context).pop();
-                                  },
+                            context: context,
+                            barrierDismissible: false, // 창 밖 선택시 창 닫기
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('친구 추가'),
+                                content: SingleChildScrollView(
+                                  child: Text(userN + "님을 추가하시겠습니까?"),
                                 ),
-                                TextButton(
-                                  child: Text('취소'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-                              ],
-                            );
-                          });
-                          userE = "";
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: Text('추가'),
+                                    onPressed: () {
+                                      _user.update({
+                                        'friends': FieldValue.arrayUnion(
+                                            [_filter.text])
+                                      });
+                                      Fluttertoast.showToast(
+                                          msg: userN + '님이 추가되었습니다.');
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  TextButton(
+                                    child: Text('취소'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            });
+                        userE = "";
                       } else {
                         Fluttertoast.showToast(msg: '해당 이메일이 검색되지 않습니다.');
                       }
