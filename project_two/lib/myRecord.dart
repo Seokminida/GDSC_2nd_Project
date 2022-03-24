@@ -15,7 +15,7 @@ class _MyRecordState extends State<MyRecord> {
   final _user = FirebaseFirestore.instance
       .collection('user')
       .doc('${FirebaseAuth.instance.currentUser!.uid}')
-      .collection('route'); 
+      .collection('route');
 
   void deleteUser() async {
     try {
@@ -57,7 +57,8 @@ class _MyRecordState extends State<MyRecord> {
                   margin: const EdgeInsets.all(10),
                   child: ListTile(
                     leading: Icon(Icons.zoom_in),
-                    title: Text(documentSnapshot['lat'] + documentSnapshot['lon']), //
+                    title: Text(
+                        documentSnapshot['lat'] + documentSnapshot['lng']), //
                     subtitle: Text(documentSnapshot['place']), //
                     trailing: SizedBox(
                       width: 100,
@@ -72,8 +73,8 @@ class _MyRecordState extends State<MyRecord> {
                                       return AlertDialog(
                                         title: Text('친구'),
                                         content: SingleChildScrollView(
-                                          child:
-                                              Text(documentSnapshot['friends'][0]),
+                                          child: Text(
+                                              documentSnapshot['friends'][0]),
                                         ),
                                         actions: <Widget>[
                                           TextButton(

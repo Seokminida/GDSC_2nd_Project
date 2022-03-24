@@ -45,6 +45,7 @@ dependencies:
   searchfield: ^0.6.2
   animated_splash_screen: ^1.0.1+2
   splashscreen:
+  dropdown_formfield: ^0.1.3
 
 dev_dependencies:
   flutter_test:
